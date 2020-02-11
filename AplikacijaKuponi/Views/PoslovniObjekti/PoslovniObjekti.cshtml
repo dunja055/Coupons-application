@@ -1,0 +1,406 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Kuponi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap styles -->
+    <link href="~/Content/assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- Customize styles -->
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <!-- font awesome styles -->
+    <link href="~/Content/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!--[if IE 7]>
+        <link href="css/font-awesome-ie7.min.css" rel="stylesheet">
+    <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="~/Content/assets/ico/favicon.ico">
+</head>
+<body>
+
+    <!--
+    Lower Header Section
+    -->
+    <div class="container">
+        <div id="gototop"> </div>
+        <header id="header">
+            <div class="row">
+                <div class="span4">
+                    <h1>
+                        <a class="logo" href="@Url.Action("Index","Home")">
+
+                            <img src="~/Content/assets/img/Kuponi.png" alt="bootstrap shop">
+                        </a>
+                    </h1>
+                </div>
+                <div class="span4">
+                    <div class="offerNoteWrapper">
+
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <!--
+        Navigation Bar Section
+        -->
+        @if (((Korisnik)Session["ulogovani"]) == null)
+        {
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li class=""><a href="@Url.Action("Index","Home")">Početna	</a></li>
+                                <li class=""><a href="@Url.Action("PoslovniObjekti", "PoslovniObjekti")"> Poslovni objekti </a></li>
+                                <li class=""><a href="@Url.Action("Login", "Login")">Prijava</a></li>
+                                <li class=""><a href="@Url.Action("Registracija", "Registracija")"> Registracija</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (((Korisnik)Session["ulogovani"]).Uloga == false)
+        {
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li class=""><a href="@Url.Action("Index","Home")">Početna	</a></li>
+                                <li class=""><a href="@Url.Action("Rezervacije","Rezervacije")"> Rezervacije </a></li>
+                                <li class=""><a href="@Url.Action("PoslovniObjekti", "PoslovniObjekti")"> Poslovni objekti </a></li>
+                                <li class=""><a href="@Url.Action("Odjava", "Home")"> Odjava </a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (((Korisnik)Session["ulogovani"]).Uloga == true)
+        {
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <div class="nav-collapse">
+                            <ul class="nav">
+                                <li class=""><a href="@Url.Action("Index","Home")"> Početna	</a></li>
+                                <li class=""><a href="@Url.Action("RezervacijeAdministrator", "RezervacijeAdministrator")"> Rezervacije </a></li>
+                                <li class=""><a href="@Url.Action("PoslovniObjekti", "PoslovniObjekti")"> Poslovni objekti </a></li>
+                                <li class=""><a href="@Url.Action("Kategorije", "Kategorije")"> Kategorije </a></li>
+                                <li class=""><a href="@Url.Action("Korisnici", "Korisnici")"> Korisnici </a></li>
+                                <li class=""><a href="@Url.Action("Odjava", "Home")"> Odjava </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!--
+        Body Section
+        -->
+        <div class="row">
+            <div id="sidebar" class="span3">
+                <div class="well well-small">
+                    <p> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic"> Izaberi grad: </font></p>
+
+
+                    @using (Html.BeginForm("IzborGrada", "Home", FormMethod.Post))
+                    {
+                        <select name="naziv">
+                            <option value="Novi Sad">Novi Sad</option>
+                            <option value="Beograd">Beograd</option>
+                        </select>
+                        <input type="submit" value="Izaberi!" class="btn btn-primary">
+                    }
+
+
+                </div>
+
+                <div class="well well-small">
+                    <ul class="nav nav-list">
+                        @foreach (Kategorija k in (Session["kategorija"] as List<Kategorija>))
+                        {
+                            <li>
+                                <a href="@Url.Action("IzborKategorije", "Home", new { IDKategorija = k.IDKategorija }) "><span class="icon-chevron-right"> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic"> @k.NazivKategorije (@k.Kolicina)</font></span></a>
+
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                @if (((Korisnik)Session["ulogovani"]) != null && ((Korisnik)Session["ulogovani"]).Uloga == false)
+                {
+                    <div class="well well-small">
+                        <ul class="nav nav-list">
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Dobrodošli @(((Korisnik)Session["ulogovani"]).Username)! </font> </li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Ime: @(((Korisnik)Session["ulogovani"]).Ime) </font></li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Prezime: @(((Korisnik)Session["ulogovani"]).Prezime) </font></li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Email: @(((Korisnik)Session["ulogovani"]).Email) </font></li>
+                        </ul>
+
+                    </div>
+                }
+                @if (((Korisnik)Session["ulogovani"]) != null && ((Korisnik)Session["ulogovani"]).Uloga == true)
+                {
+                    <div class="well well-small">
+                        <ul class="nav nav-list">
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Dobrodošli @(((Korisnik)Session["ulogovani"]).Username)! </font> </li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Ime: @(((Korisnik)Session["ulogovani"]).Ime) </font></li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Prezime: @(((Korisnik)Session["ulogovani"]).Prezime) </font></li>
+                            <li class=""> <font size="3" color="#c0392b" style="font-family: times, serif; font-style:italic">Email: @(((Korisnik)Session["ulogovani"]).Email) </font></li>
+                        </ul>
+                    </div>
+                }
+
+
+            </div>
+            <div class="span9">
+                <div class="well np">
+                    <div id="myCarousel" class="carousel slide homCar">
+                        <div class="carousel-inner">
+                            <div class="item">
+                                <img style="width:100%" src="~/Content/assets/img/Putovanja.png" alt="bootstrap ecommerce templates">
+                                <div class="carousel-caption">
+                                    <h4>Putovanja</h4>
+
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img style="width:100%" src="~/Content/assets/img/HranaiPice.png" alt="bootstrap ecommerce templates">
+                                <div class="carousel-caption">
+                                    <h4>Hrana i piće</h4>
+
+                                </div>
+                            </div>
+                            <div class="item active">
+                                <img style="width:100%" src="~/Content/assets/img/Lepota.png" alt="bootstrap ecommerce templates">
+                                <div class="carousel-caption">
+                                    <h4>Lepota i zdravlje</h4>
+
+                                </div>
+                            </div>
+                            <div class="item">
+                                <img style="width:100%" src="~/Content/assets/img/Proizvodi.png" alt="bootstrap templates">
+                                <div class="carousel-caption">
+                                    <h4>Proizvodi</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                        <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                    </div>
+                </div>
+                <!--
+                New Products
+                -->
+                <div class="well well-small">
+                    <h3>Poslovni objekti </h3>
+
+                    @if (((Korisnik)Session["ulogovani"]) != null && ((Korisnik)Session["ulogovani"]).Uloga == true)
+                    {
+                        using (Html.BeginForm("DodajPoslovniObjekat", "PoslovniObjekti", FormMethod.Post))
+                        {
+                            <p><a href="@Url.Action("DodavanjePO", "DodavanjePO")" style="color: black; text-decoration:none"> <img src="~/Content/assets/img/dodaj.png" style="width: 40px; height: 40px"><strong>Dodaj poslovni objekat</strong></a></p>
+
+                        }
+                    }
+                    <hr class="soften" />
+                    <div class="row-fluid">
+                        <div id="newProductCar" class="carousel slide">
+                            <div class="carousel-inner">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    @if (((Korisnik)Session["ulogovani"]) == null)
+                    {
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                @foreach (PoslovniObjekti po in (Session["poslovniObjekti"] as List<PoslovniObjekti>))
+                                {
+
+                                    List<SlikePoslovnihObjekata> slike1 = po.SlikePoslovnihObjekata.ToList();
+                                    <li>
+                                        <div id="poslovniObjekti">
+                                            <div class="caption cntr">
+
+                                            </div>
+
+                                            <a href="@Url.Action("Objekat", "Objekat", new {IDPoslovniObjekti = po.IDPoslovniObjekti })"><img id="slikaPonude1" src="@slike1[0].Putanja" style="border-radius:10%;border-color:black;border-width:1px;border-style:solid" alt=""></a>
+
+                                            <div id="P">
+                                                <p><strong>@po.NazivObjekta</strong></p>
+                                                <p> @po.Grad</p>
+                                                <p> @po.Adresa</p>
+                                                <p> @po.Telefon</p>
+                                                <p> @po.Email</p>
+
+
+                                                <br class="clr">
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else if (((Korisnik)Session["ulogovani"]).Uloga == false)
+                    {
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                @foreach (PoslovniObjekti po in (Session["poslovniObjekti"] as List<PoslovniObjekti>))
+                                {
+
+                                    List<SlikePoslovnihObjekata> slike1 = po.SlikePoslovnihObjekata.ToList();
+                                    <li>
+                                        <div id="poslovniObjekti">
+                                            <div class="caption cntr">
+
+                                            </div>
+
+                                            <a href="@Url.Action("Objekat", "Objekat", new {IDPoslovniObjekti = po.IDPoslovniObjekti })"><img id="slikaPonude1" src="@slike1[0].Putanja" style="border-radius:10%;border-color:black;border-width:1px;border-style:solid" alt=""></a>
+
+                                            <div id="P">
+                                                <p><strong>@po.NazivObjekta</strong></p>
+                                                <p> @po.Grad</p>
+                                                <p> @po.Adresa</p>
+                                                <p> @po.Telefon</p>
+                                                <p> @po.Email</p>
+
+
+                                                <br class="clr">
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                    else if (((Korisnik)Session["ulogovani"]).Uloga == true)
+                    {
+                        <div class="row-fluid">
+                            <ul class="thumbnails">
+                                @foreach (PoslovniObjekti po in (Session["poslovniObjekti"] as List<PoslovniObjekti>))
+                                {
+
+                                    List<SlikePoslovnihObjekata> slike1 = po.SlikePoslovnihObjekata.ToList();
+                                    <li>
+                                        <div id="poslovniObjekti">
+
+                                            <a href="@Url.Action("Objekat", "Objekat", new {IDPoslovniObjekti = po.IDPoslovniObjekti })"><img id="slikaPonude1" src="@slike1[0].Putanja" style="border-radius:10%;border-color:black;border-width:1px;border-style:solid" alt=""></a>
+
+                                            <div id="P">
+
+                                                <p><strong>@po.NazivObjekta</strong></p>
+                                                <p> @po.Grad</p>
+                                                <p> @po.Adresa</p>
+                                                <p> @po.Telefon</p>
+                                                <p> @po.Email</p>
+
+
+                                                <br class="clr">
+                                            </div>
+                                            <div id="T">
+
+                                                <table>
+                                                    <tr>
+                                                        <th><p> <a href="@Url.Action("IzmenaPO", "IzmenaPO",  new {id = @po.IDPoslovniObjekti })" style="color: black; text-decoration:none"><img src="~/Content/assets/img/izmeni.png" style="width: 30px; height: 30px">Izmeni</a> </p></th>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th><p> <a href="@Url.Action("BrisanjePoslovnihObjekata", "BrisanjePoslovnihObjekata",  new {id = @po.IDPoslovniObjekti })" style="color: black; text-decoration:none"><img src="~/Content/assets/img/kanta.png" style="width: 30px; height: 30px"> Obrisi</a></p></th>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+        <!--
+        Clients
+        -->
+        <section class="our_client">
+            <hr class="soften" />
+
+            <hr class="soften" />
+
+        </section>
+
+        <!--
+        Footer
+        -->
+        <footer class="footer">
+            <div class="row-fluid">
+                <h5>O nama</h5>
+                <p>
+                    Naš sajt vam pomaže da nadjete najbolje ponude po veoma niskim cenama. Sve što je
+                    potrebno da uradite je da se registrujete i kliknete na ponudu za koju želite da kupite vaučer.
+                    Nakon što evidentiramo Vašu uplatu automatski Vam šaljemo na email adresu Vaučer koji ste kupili.
+                    Preostaje Vam još da odštampate Vaš vaučer i iskoristite ga u roku koji je naveden u ponudi.
+                </p><br>
+                <h5>Kontakt</h5>
+                <p>021/568-478</p>
+                <p>065/777-444</p>
+
+            </div>
+        </footer>
+    </div><!-- /container -->
+
+    <div class="copyright">
+        <div class="container">
+            <p class="pull-right">
+                <a href="#"><img src="~/Content/assets/img/maestro.png" alt="payment"></a>
+                <a href="#"><img src="~/Content/assets/img/mc.png" alt="payment"></a>
+                <a href="#"><img src="~/Content/assets/img/pp.png" alt="payment"></a>
+                <a href="#"><img src="~/Content/assets/img/visa.png" alt="payment"></a>
+                <a href="#"><img src="~/Content/assets/img/disc.png" alt="payment"></a>
+            </p>
+
+        </div>
+    </div>
+    <a href="#" class="gotop"><i class="icon-double-angle-up"></i></a>
+
+    <script src="~/Content/assets/js/jquery.js"></script>
+    <script src="~/Content/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/assets/js/jquery.easing-1.3.min.js"></script>
+    <script src="~/Content/assets/js/jquery.scrollTo-1.4.3.1-min.js"></script>
+    <script src="~/Content/assets/js/shop.js"></script>
+</body>
+</html>

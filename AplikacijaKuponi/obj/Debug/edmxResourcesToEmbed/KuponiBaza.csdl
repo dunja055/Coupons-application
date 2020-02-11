@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KuponiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="IstorijaKupovine">
+    <Key>
+      <PropertyRef Name="IDIstorijaKupovine" />
+    </Key>
+    <Property Name="IDIstorijaKupovine" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDKorisnik" Type="Int32" />
+    <Property Name="IDPonudaiPoslovniObjekti" Type="Int32" />
+    <NavigationProperty Name="Korisnik" Relationship="Self.FK_IstorijaKupovine_Korisnik" FromRole="IstorijaKupovine" ToRole="Korisnik" />
+    <NavigationProperty Name="PonudaiPoslovniObjekti" Relationship="Self.FK_IstorijaKupovine_PonudaiPoslovniObjekti" FromRole="IstorijaKupovine" ToRole="PonudaiPoslovniObjekti" />
+  </EntityType>
+  <EntityType Name="Kategorija">
+    <Key>
+      <PropertyRef Name="IDKategorija" />
+    </Key>
+    <Property Name="IDKategorija" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NazivKategorije" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Kolicina" Type="Int32" />
+    <NavigationProperty Name="Ponuda" Relationship="Self.FK_Ponuda_Kategorija" FromRole="Kategorija" ToRole="Ponuda" />
+  </EntityType>
+  <EntityType Name="Korisnik">
+    <Key>
+      <PropertyRef Name="IDKorisnik" />
+    </Key>
+    <Property Name="IDKorisnik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Uloga" Type="Boolean" />
+    <Property Name="Ime" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Prezime" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="IstorijaKupovine" Relationship="Self.FK_IstorijaKupovine_Korisnik" FromRole="Korisnik" ToRole="IstorijaKupovine" />
+    <NavigationProperty Name="Obavestenje" Relationship="Self.FK_Obavestenje_Korisnik" FromRole="Korisnik" ToRole="Obavestenje" />
+    <NavigationProperty Name="Recenzija" Relationship="Self.FK_Recenzija_Korisnik" FromRole="Korisnik" ToRole="Recenzija" />
+    <NavigationProperty Name="Rezervacija" Relationship="Self.FK_Rezervacija_Korisnik" FromRole="Korisnik" ToRole="Rezervacija" />
+  </EntityType>
+  <EntityType Name="Obavestenje">
+    <Key>
+      <PropertyRef Name="IDObavestenje" />
+    </Key>
+    <Property Name="IDObavestenje" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Tekst" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+    <Property Name="Datum" Type="DateTime" Precision="0" />
+    <Property Name="IDKorisnik" Type="Int32" />
+    <NavigationProperty Name="Korisnik" Relationship="Self.FK_Obavestenje_Korisnik" FromRole="Obavestenje" ToRole="Korisnik" />
+  </EntityType>
+  <EntityType Name="Ponuda">
+    <Key>
+      <PropertyRef Name="IDPonuda" />
+    </Key>
+    <Property Name="IDPonuda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NazivPonude" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="OpisPonude" Type="String" MaxLength="1500" FixedLength="false" Unicode="true" />
+    <Property Name="Datum" Type="DateTime" Precision="0" />
+    <Property Name="Kolicina" Type="Int32" />
+    <Property Name="Cena" Type="Double" />
+    <Property Name="IDKategorija" Type="Int32" />
+    <NavigationProperty Name="Kategorija" Relationship="Self.FK_Ponuda_Kategorija" FromRole="Ponuda" ToRole="Kategorija" />
+    <NavigationProperty Name="PonudaiPoslovniObjekti" Relationship="Self.FK_PonudaiPoslovniObjekti_PonudaiPoslovniObjekti" FromRole="Ponuda" ToRole="PonudaiPoslovniObjekti" />
+    <NavigationProperty Name="SlikePonude" Relationship="Self.FK_SlikePonude_Ponuda" FromRole="Ponuda" ToRole="SlikePonude" />
+  </EntityType>
+  <EntityType Name="PonudaiPoslovniObjekti">
+    <Key>
+      <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+    </Key>
+    <Property Name="IDPonudaiPoslovniObjekti" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDPonuda" Type="Int32" />
+    <Property Name="IDPoslovniObjekti" Type="Int32" />
+    <NavigationProperty Name="IstorijaKupovine" Relationship="Self.FK_IstorijaKupovine_PonudaiPoslovniObjekti" FromRole="PonudaiPoslovniObjekti" ToRole="IstorijaKupovine" />
+    <NavigationProperty Name="Ponuda" Relationship="Self.FK_PonudaiPoslovniObjekti_PonudaiPoslovniObjekti" FromRole="PonudaiPoslovniObjekti" ToRole="Ponuda" />
+    <NavigationProperty Name="PoslovniObjekti" Relationship="Self.FK_PonudaiPoslovniObjekti_PoslovniObjekti" FromRole="PonudaiPoslovniObjekti" ToRole="PoslovniObjekti" />
+    <NavigationProperty Name="Recenzija" Relationship="Self.FK_Recenzija_PonudaiPoslovniObjekti" FromRole="PonudaiPoslovniObjekti" ToRole="Recenzija" />
+    <NavigationProperty Name="Rezervacija" Relationship="Self.FK_Rezervacija_PonudaiPoslovniObjekti" FromRole="PonudaiPoslovniObjekti" ToRole="Rezervacija" />
+  </EntityType>
+  <EntityType Name="PoslovniObjekti">
+    <Key>
+      <PropertyRef Name="IDPoslovniObjekti" />
+    </Key>
+    <Property Name="IDPoslovniObjekti" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NazivObjekta" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Grad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Adresa" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Telefon" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PonudaiPoslovniObjekti" Relationship="Self.FK_PonudaiPoslovniObjekti_PoslovniObjekti" FromRole="PoslovniObjekti" ToRole="PonudaiPoslovniObjekti" />
+    <NavigationProperty Name="SlikePoslovnihObjekata" Relationship="Self.FK_SlikePoslovnihObjekata_PoslovniObjekti" FromRole="PoslovniObjekti" ToRole="SlikePoslovnihObjekata" />
+  </EntityType>
+  <EntityType Name="Recenzija">
+    <Key>
+      <PropertyRef Name="IDRecenzija" />
+    </Key>
+    <Property Name="IDRecenzija" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Naslov" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Komentar" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Ocena" Type="Int32" />
+    <Property Name="Datum" Type="DateTime" Precision="0" />
+    <Property Name="IDPonudaiPoslovniObjekti" Type="Int32" />
+    <Property Name="IDKorisnik" Type="Int32" />
+    <NavigationProperty Name="Korisnik" Relationship="Self.FK_Recenzija_Korisnik" FromRole="Recenzija" ToRole="Korisnik" />
+    <NavigationProperty Name="PonudaiPoslovniObjekti" Relationship="Self.FK_Recenzija_PonudaiPoslovniObjekti" FromRole="Recenzija" ToRole="PonudaiPoslovniObjekti" />
+  </EntityType>
+  <EntityType Name="Rezervacija">
+    <Key>
+      <PropertyRef Name="IDRezervacija" />
+    </Key>
+    <Property Name="IDRezervacija" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Cena" Type="Double" />
+    <Property Name="Datum" Type="DateTime" Precision="0" />
+    <Property Name="Uplaceno" Type="Boolean" />
+    <Property Name="IDKorisnik" Type="Int32" />
+    <Property Name="IDPonudaiPoslovniObjekti" Type="Int32" />
+    <NavigationProperty Name="Korisnik" Relationship="Self.FK_Rezervacija_Korisnik" FromRole="Rezervacija" ToRole="Korisnik" />
+    <NavigationProperty Name="PonudaiPoslovniObjekti" Relationship="Self.FK_Rezervacija_PonudaiPoslovniObjekti" FromRole="Rezervacija" ToRole="PonudaiPoslovniObjekti" />
+  </EntityType>
+  <EntityType Name="SlikePonude">
+    <Key>
+      <PropertyRef Name="IDSlikaPonude" />
+    </Key>
+    <Property Name="IDSlikaPonude" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Putanja" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IDPonuda" Type="Int32" />
+    <NavigationProperty Name="Ponuda" Relationship="Self.FK_SlikePonude_Ponuda" FromRole="SlikePonude" ToRole="Ponuda" />
+  </EntityType>
+  <EntityType Name="SlikePoslovnihObjekata">
+    <Key>
+      <PropertyRef Name="IDSlikePoslovnihObjekata" />
+    </Key>
+    <Property Name="IDSlikePoslovnihObjekata" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Putanja" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IDPoslovniObjekti" Type="Int32" />
+    <NavigationProperty Name="PoslovniObjekti" Relationship="Self.FK_SlikePoslovnihObjekata_PoslovniObjekti" FromRole="SlikePoslovnihObjekata" ToRole="PoslovniObjekti" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_IstorijaKupovine_Korisnik">
+    <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="0..1" />
+    <End Role="IstorijaKupovine" Type="Self.IstorijaKupovine" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Korisnik">
+        <PropertyRef Name="IDKorisnik" />
+      </Principal>
+      <Dependent Role="IstorijaKupovine">
+        <PropertyRef Name="IDKorisnik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_IstorijaKupovine_PonudaiPoslovniObjekti">
+    <End Role="PonudaiPoslovniObjekti" Type="Self.PonudaiPoslovniObjekti" Multiplicity="0..1" />
+    <End Role="IstorijaKupovine" Type="Self.IstorijaKupovine" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PonudaiPoslovniObjekti">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Principal>
+      <Dependent Role="IstorijaKupovine">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ponuda_Kategorija">
+    <End Role="Kategorija" Type="Self.Kategorija" Multiplicity="0..1" />
+    <End Role="Ponuda" Type="Self.Ponuda" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategorija">
+        <PropertyRef Name="IDKategorija" />
+      </Principal>
+      <Dependent Role="Ponuda">
+        <PropertyRef Name="IDKategorija" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Obavestenje_Korisnik">
+    <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="0..1" />
+    <End Role="Obavestenje" Type="Self.Obavestenje" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Korisnik">
+        <PropertyRef Name="IDKorisnik" />
+      </Principal>
+      <Dependent Role="Obavestenje">
+        <PropertyRef Name="IDKorisnik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Recenzija_Korisnik">
+    <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="0..1" />
+    <End Role="Recenzija" Type="Self.Recenzija" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Korisnik">
+        <PropertyRef Name="IDKorisnik" />
+      </Principal>
+      <Dependent Role="Recenzija">
+        <PropertyRef Name="IDKorisnik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rezervacija_Korisnik">
+    <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="0..1" />
+    <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Korisnik">
+        <PropertyRef Name="IDKorisnik" />
+      </Principal>
+      <Dependent Role="Rezervacija">
+        <PropertyRef Name="IDKorisnik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PonudaiPoslovniObjekti_PonudaiPoslovniObjekti">
+    <End Role="Ponuda" Type="Self.Ponuda" Multiplicity="0..1" />
+    <End Role="PonudaiPoslovniObjekti" Type="Self.PonudaiPoslovniObjekti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ponuda">
+        <PropertyRef Name="IDPonuda" />
+      </Principal>
+      <Dependent Role="PonudaiPoslovniObjekti">
+        <PropertyRef Name="IDPonuda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SlikePonude_Ponuda">
+    <End Role="Ponuda" Type="Self.Ponuda" Multiplicity="0..1" />
+    <End Role="SlikePonude" Type="Self.SlikePonude" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Ponuda">
+        <PropertyRef Name="IDPonuda" />
+      </Principal>
+      <Dependent Role="SlikePonude">
+        <PropertyRef Name="IDPonuda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PonudaiPoslovniObjekti_PoslovniObjekti">
+    <End Role="PoslovniObjekti" Type="Self.PoslovniObjekti" Multiplicity="0..1" />
+    <End Role="PonudaiPoslovniObjekti" Type="Self.PonudaiPoslovniObjekti" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PoslovniObjekti">
+        <PropertyRef Name="IDPoslovniObjekti" />
+      </Principal>
+      <Dependent Role="PonudaiPoslovniObjekti">
+        <PropertyRef Name="IDPoslovniObjekti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Recenzija_PonudaiPoslovniObjekti">
+    <End Role="PonudaiPoslovniObjekti" Type="Self.PonudaiPoslovniObjekti" Multiplicity="0..1" />
+    <End Role="Recenzija" Type="Self.Recenzija" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PonudaiPoslovniObjekti">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Principal>
+      <Dependent Role="Recenzija">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rezervacija_PonudaiPoslovniObjekti">
+    <End Role="PonudaiPoslovniObjekti" Type="Self.PonudaiPoslovniObjekti" Multiplicity="0..1" />
+    <End Role="Rezervacija" Type="Self.Rezervacija" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PonudaiPoslovniObjekti">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Principal>
+      <Dependent Role="Rezervacija">
+        <PropertyRef Name="IDPonudaiPoslovniObjekti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SlikePoslovnihObjekata_PoslovniObjekti">
+    <End Role="PoslovniObjekti" Type="Self.PoslovniObjekti" Multiplicity="0..1" />
+    <End Role="SlikePoslovnihObjekata" Type="Self.SlikePoslovnihObjekata" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PoslovniObjekti">
+        <PropertyRef Name="IDPoslovniObjekti" />
+      </Principal>
+      <Dependent Role="SlikePoslovnihObjekata">
+        <PropertyRef Name="IDPoslovniObjekti" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KuponiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="IstorijaKupovine" EntityType="Self.IstorijaKupovine" />
+    <EntitySet Name="Kategorija" EntityType="Self.Kategorija" />
+    <EntitySet Name="Korisnik" EntityType="Self.Korisnik" />
+    <EntitySet Name="Obavestenje" EntityType="Self.Obavestenje" />
+    <EntitySet Name="Ponuda" EntityType="Self.Ponuda" />
+    <EntitySet Name="PonudaiPoslovniObjekti" EntityType="Self.PonudaiPoslovniObjekti" />
+    <EntitySet Name="PoslovniObjekti" EntityType="Self.PoslovniObjekti" />
+    <EntitySet Name="Recenzija" EntityType="Self.Recenzija" />
+    <EntitySet Name="Rezervacija" EntityType="Self.Rezervacija" />
+    <EntitySet Name="SlikePonude" EntityType="Self.SlikePonude" />
+    <EntitySet Name="SlikePoslovnihObjekata" EntityType="Self.SlikePoslovnihObjekata" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_IstorijaKupovine_Korisnik" Association="Self.FK_IstorijaKupovine_Korisnik">
+      <End Role="Korisnik" EntitySet="Korisnik" />
+      <End Role="IstorijaKupovine" EntitySet="IstorijaKupovine" />
+    </AssociationSet>
+    <AssociationSet Name="FK_IstorijaKupovine_PonudaiPoslovniObjekti" Association="Self.FK_IstorijaKupovine_PonudaiPoslovniObjekti">
+      <End Role="PonudaiPoslovniObjekti" EntitySet="PonudaiPoslovniObjekti" />
+      <End Role="IstorijaKupovine" EntitySet="IstorijaKupovine" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ponuda_Kategorija" Association="Self.FK_Ponuda_Kategorija">
+      <End Role="Kategorija" EntitySet="Kategorija" />
+      <End Role="Ponuda" EntitySet="Ponuda" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Obavestenje_Korisnik" Association="Self.FK_Obavestenje_Korisnik">
+      <End Role="Korisnik" EntitySet="Korisnik" />
+      <End Role="Obavestenje" EntitySet="Obavestenje" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Recenzija_Korisnik" Association="Self.FK_Recenzija_Korisnik">
+      <End Role="Korisnik" EntitySet="Korisnik" />
+      <End Role="Recenzija" EntitySet="Recenzija" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rezervacija_Korisnik" Association="Self.FK_Rezervacija_Korisnik">
+      <End Role="Korisnik" EntitySet="Korisnik" />
+      <End Role="Rezervacija" EntitySet="Rezervacija" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PonudaiPoslovniObjekti_PonudaiPoslovniObjekti" Association="Self.FK_PonudaiPoslovniObjekti_PonudaiPoslovniObjekti">
+      <End Role="Ponuda" EntitySet="Ponuda" />
+      <End Role="PonudaiPoslovniObjekti" EntitySet="PonudaiPoslovniObjekti" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SlikePonude_Ponuda" Association="Self.FK_SlikePonude_Ponuda">
+      <End Role="Ponuda" EntitySet="Ponuda" />
+      <End Role="SlikePonude" EntitySet="SlikePonude" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PonudaiPoslovniObjekti_PoslovniObjekti" Association="Self.FK_PonudaiPoslovniObjekti_PoslovniObjekti">
+      <End Role="PoslovniObjekti" EntitySet="PoslovniObjekti" />
+      <End Role="PonudaiPoslovniObjekti" EntitySet="PonudaiPoslovniObjekti" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Recenzija_PonudaiPoslovniObjekti" Association="Self.FK_Recenzija_PonudaiPoslovniObjekti">
+      <End Role="PonudaiPoslovniObjekti" EntitySet="PonudaiPoslovniObjekti" />
+      <End Role="Recenzija" EntitySet="Recenzija" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rezervacija_PonudaiPoslovniObjekti" Association="Self.FK_Rezervacija_PonudaiPoslovniObjekti">
+      <End Role="PonudaiPoslovniObjekti" EntitySet="PonudaiPoslovniObjekti" />
+      <End Role="Rezervacija" EntitySet="Rezervacija" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SlikePoslovnihObjekata_PoslovniObjekti" Association="Self.FK_SlikePoslovnihObjekata_PoslovniObjekti">
+      <End Role="PoslovniObjekti" EntitySet="PoslovniObjekti" />
+      <End Role="SlikePoslovnihObjekata" EntitySet="SlikePoslovnihObjekata" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
